@@ -1,0 +1,94 @@
+# v6.1 — Conditional Persistence Monotonicity (CPM) Variant for Measurable Quantum Monotones
+
+> **One-paragraph proposition.** Measurable quantum monotones decrease under open-system CPTP semigroup dynamics and remain decreasing after any coarse-graining that is preserved by the dynamics. If a composite persistence score \(P_Q\) is formed by a fixed-weight aggregation of experimentally estimated CPTP-monotones (coherence-, entanglement-, thermodynamic-, and noise-robustness proxies), then \(P_Q\) inherits conditional monotonicity and functions as a Lyapunov-like stability functional for the measured system. The “Quantum Reynolds number” is a heuristic derived from Pareto trade‑offs of these monotones and is not itself a monotone.
+
+---
+
+## 1. Setting and Notation
+- Let \((\mathcal A,\tau)\) be a von Neumann algebra with faithful normal state \(\tau\).
+- Let \(\{\Phi_t\}_{t\ge 0}\) be a norm-continuous CPTP (completely positive trace-preserving) dynamical semigroup in the Schrödinger picture; write \(\rho_t := \Phi_t(\rho_0)\).
+- For a \(\tau\)-preserving conditional expectation \(E_B: \mathcal A \to B\subseteq\mathcal A\) (coarse-graining), we use the same symbol for the dual action on states by pre-composition.
+- A **measurable quantum monotone** \(I\) is a functional on states such that for every CPTP map \(\Lambda\), \(I(\rho)\ge I(\Lambda(\rho))\), and \(I\) is measurable/continuous in the relevant topology (trace norm or weak-* as appropriate).
+
+**Persistence of coarse-grainings.** There exists a nested family of subalgebras \(B_0\supseteq B_1\supseteq\cdots\) with associated \(\tau\)-preserving conditional expectations \(E_{B_n}\) such that  
+\[
+\Phi_t\circ E_{B_n} = E_{B_n}\circ \Phi_t \quad \text{for all } t\ge 0,\ n\in\mathbb N.\tag{P}
+\]
+
+---
+
+## 2. CPM Theorem (core statement)
+**Theorem (Conditional Persistence Monotonicity).**  
+Let \(I\) be a measurable quantum monotone, \(\{\Phi_t\}\) a CPTP semigroup, and \(\{E_{B_n}\}\) satisfy (P). Then for all \(t,s\ge 0\) and \(n\in\mathbb N\):
+\[
+I(\rho_t)\ \ge\ I\big(E_{B_n}(\rho_t)\big)\ \ge\ I\big(E_{B_n}(\rho_{t+s})\big).\tag{1}
+\]
+
+**Proof sketch.**  
+By data-processing, \(I(\rho_t)\ge I(E_{B_n}(\rho_t))\). Using semigroup property \(\Phi_{t+s}=\Phi_s\circ\Phi_t\) and (P),  
+\(E_{B_n}(\rho_{t+s})=E_{B_n}(\Phi_s(\rho_t))=(E_{B_n}\circ\Phi_s)(\rho_t)=(\Phi_s\circ E_{B_n})(\rho_t)\).  
+Apply data-processing again with \(\Lambda=\Phi_s\) to get the second inequality.
+
+**Remarks.** If (P) fails (non-persistent coarse-graining), only the first inequality of (1) is guaranteed.
+
+---
+
+## 3. Constructing \(P_Q\) as a Corollary
+We define a composite **persistence score** \(P_Q\in[0,1]\) by aggregating normalized **component monotones** \(n_i\in[0,1]\):
+\[
+P_Q := \sum_{i=1}^m w_i\, n_i \quad \text{with} \quad w_i\ge 0,\ \sum_i w_i=1,\tag{2}
+\]
+(or the geometric mean \(P_Q:=\prod_i n_i^{w_i}\)). Fix \(w_i\) independent of time/state/trajectory.
+
+**Component choices (examples):**
+1. **Coherence monotone** \(n_\mathrm{coh}\): normalized *relative-entropy coherence* or contractive distance to the dephased state in a reference basis.
+2. **Entanglement monotone** \(n_\mathrm{ent}\): normalized lower bound estimated via classical shadows for negativity/entanglement of formation (monotone under LOCC/CPTP on subsystems).
+3. **Thermodynamic proximity** \(n_\mathrm{therm}\): fidelity or (exp. rescaled) relative entropy to an invariant/steady state \(\sigma\).
+4. **Noise-robustness proxy** \(n_\mathrm{noise}\): a contractive channel divergence surrogate estimated from randomized benchmarking.
+
+With each \(n_i\) CPTP-monotone and \(w_i\) fixed, **convexity/Schur-concavity** imply \(P_Q\) is CPTP-monotone. Hence, by the CPM Theorem,
+\[
+P_Q(\rho_t)\ge P_Q\big(E_{B_n}(\rho_t)\big)\ge P_Q\big(E_{B_n}(\rho_{t+s})\big).\tag{3}
+\]
+Thus \(P_Q\) is a Lyapunov-like functional for the measurement pipeline, provided the persistence assumption holds.
+
+---
+
+## 4. Measurement & Estimation Protocol (operational)
+- **Filtration design.** Choose coarse-grainings \(E_{B_n}\): subsystem traces, symmetry/energy shells, or frequency bands approximately preserved by \(\Phi_t\).
+- **Data acquisition.** Use light tomography, randomized benchmarking, and spectroscopy/thermalization for invariant-state estimates.
+- **Monotone estimation.** Convert raw data to \(n_i\) with certified confidence intervals; avoid re-fitting scales over time.
+- **Aggregation.** Compute \(P_Q\) via (2) with fixed \(w_i\).
+
+Topological data analysis (TDA) tools—persistence diagrams/landscapes—**remain diagnostic witnesses**, not the monotones of the theorem unless proven CPTP-monotone.
+
+---
+
+## 5. Heuristic Taxonomy: “Quantum Reynolds Number” \(\mathrm{Re}_Q\)
+- \(\mathrm{Re}_Q\) is **not** a monotone; it is a **derived index** for organizing devices/regimes on a Pareto front of \((n_\mathrm{coh}, n_\mathrm{ent}, n_\mathrm{therm}, n_\mathrm{noise})\).
+- Example: define it as a ratio of “transport-like” to “dissipation-like” axes or a calibrated composite highlighting transitions. Always mark **heuristic** and **task-specific**.
+
+---
+
+## 6. Limitations & Edge Cases
+1. **Non-Markovian dynamics:** if evolution isn’t CP-divisible, only the first inequality of (1) holds.  
+2. **Non-persistent coarse-graining:** (P) violated ⇒ only \(I(\rho_t)\ge I(E_{B_n}(\rho_t))\).  
+3. **Time-varying weights/scales:** changing \(w_i\) or normalization breaks monotonicity.  
+4. **Infinite-dimensional continuity:** specify topology and continuity class; require lower-semicontinuity.
+
+---
+
+## 7. Minimal Validation Playbook
+- **1-qubit amplitude damping:** verify \(n_\mathrm{coh},n_\mathrm{therm}\) decrease; persistence trivial.  
+- **2-qubit depolarizing channel:** track entanglement lower bound; verify (3) under commuting local channels.  
+- Plot \(t\mapsto (n_i(t),P_Q(t))\) with fixed \(w_i\) and confidence bands.
+
+---
+
+## 8. How to Cite/State Novelty
+- **Theorem:** direct corollary of standard DPI + conditional expectations under assumption (P).  
+- **Your novelty:** (i) *experimental accessibility* of monotone estimates; (ii) the **task-specific aggregation** \(P_Q\); (iii) the **heuristic taxonomy** (\(\mathrm{Re}_Q\), TDA witnesses) for regime classification.
+
+---
+
+*End of v6.1 CPM Variant.*
